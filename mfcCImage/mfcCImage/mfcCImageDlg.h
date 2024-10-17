@@ -40,5 +40,7 @@ public:
 	afx_msg void OnBnClickedBtnLoad();
 	void UpdateDisplay();
 	void moveRect();
+	void drawCircle(unsigned char* fm, int i, int j, int nRadius, int nGray);
+	bool inCircle(int i, int j, int nCenterX, int nCenterY, int nRadius);
 	afx_msg void OnBnClickedBtnAction();
 };

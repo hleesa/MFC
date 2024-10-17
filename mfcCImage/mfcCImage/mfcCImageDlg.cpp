@@ -224,25 +224,20 @@ void CmfcCImageDlg::moveRect() {
 	const int nWidth = m_image.GetWidth();
 	const int nHeight = m_image.GetHeight();
 	const int nPitch = m_image.GetPitch();
+	const int nRadius = 20;
 	unsigned char* fm = (unsigned char*)m_image.GetBits();
 
-	memset(fm, 0xff, sizeof(unsigned char) * nWidth * nHeight);
+	//memset(fm, 0xff, sizeof(unsigned char) * nWidth * nHeight);
 
-	for (int j = nSttY; j < nSttY + 48; ++j) {
-		for (int i = nSttX; i < nSttX + 64; ++i) {
-			if (validaImgPos(i, j)) {
-				fm[j * nPitch + i] = nGray;
-			}
-		}
-	}
-	nSttX++;
-	nSttY++;
+	drawCircle(fm, nSttX, nSttY, nRadius, 0xff);
+	drawCircle(fm, ++nSttX, ++nSttY, nRadius, nGray);
+
 	UpdateDisplay();
 }
 
 void CmfcCImageDlg::OnBnClickedBtnAction()
 {
-	for (int i = 0; i < 640; ++i) {
+	for (int i = 0; i < 400; ++i) {
 		moveRect();
 		Sleep(10);
 	}
@@ -253,4 +248,32 @@ BOOL CmfcCImageDlg::validaImgPos(int x, int y) {
 	const int nHeight = m_image.GetHeight();
 	CRect rect(0, 0, nWidth, nHeight);
 	return rect.PtInRect(CPoint(x, y));
+}
+
+void CmfcCImageDlg::drawCircle(unsigned char* fm, int x, int y, int nRadius, int nGray) {
+	int nCenterX = x + nRadius;
+	int nCenterY = y + nRadius;
+	int nPitch = m_image.GetPitch();
+
+	for (int j = y; j < y + nRadius * 2; ++j) {
+		for (int i = x; i < x + nRadius * 2; ++i) {
+			if (inCircle(i, j, nCenterX, nCenterY, nRadius)) {
+				fm[j * nPitch + i] = nGray;
+			}
+		}
+	}
+}
+
+bool CmfcCImageDlg::inCircle(int i, int j, int nCenterX, int nCenterY, int nRadius) {
+	bool bRet = false;
+
+	double dX = i - nCenterX;
+	double dY = j - nCenterY;
+	double dDist = dX * dX + dY * dY;
+
+	if (dDist < nRadius * nRadius) {
+		bRet = true;
+	}
+
+	return bRet;
 }
