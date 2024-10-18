@@ -255,10 +255,18 @@ void CmfcCImageDlg::drawCircle(unsigned char* fm, int x, int y, int nRadius, int
 	int nCenterY = y + nRadius;
 	int nPitch = m_image.GetPitch();
 
-	for (int j = y; j < y + nRadius * 2; ++j) {
-		for (int i = x; i < x + nRadius * 2; ++i) {
-			if (inCircle(i, j, nCenterX, nCenterY, nRadius)) {
-				fm[j * nPitch + i] = nGray;
+	//for (int j = y; j < y + nRadius * 2; ++j) {
+	//	for (int i = x; i < x + nRadius * 2; ++i) {
+	//		if (inCircle(i, j, nCenterX, nCenterY, nRadius)) {
+	//			fm[j * nPitch + i] = nGray;
+	//		}
+	//	}
+	//}
+
+	for (int j = 0; j < nRadius * 2; ++j) {
+		for (int i = 0; i < 0 + nRadius * 2; ++i) {
+			if (inCircle(x + i, y + j, nCenterX, nCenterY, nRadius)) {
+				fm[ (y + j) * nPitch +  (x + i)] = nGray;
 			}
 		}
 	}
